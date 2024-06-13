@@ -11,9 +11,9 @@ app.get("/", (req, res) => {
     res.send("This is a real-time collaborative board-sharing app");
 });
 
-io.on("connection", (socket) => {
-    console.log("user connected");
-})
+// io.on("connection", (socket) => {
+//     console.log("user connected");
+// })
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log("server listening on localhost: 5000"));

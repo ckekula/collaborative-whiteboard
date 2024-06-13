@@ -1,5 +1,9 @@
 import Keycloak from 'keycloak-js';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
+import Form from './components/form/Form';
 
 const initOptions = {
   url: process.env.REACT_APP_KEYCLOAK_URL as string,
@@ -31,18 +35,29 @@ kc.init({
 });
 
 const App = () => {
-
   return (
     <>
-      <div>
-        <h1>React App</h1>
-      </div>
-      
-      <div>
-        <Button variant="success" onClick={() => { kc.logout({
-          redirectUri: 'http://localhost:3000/'
-        }) }}> Logout </Button>
-      </div>
+    <Navbar bg="primary" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand href="#home">Collaborative Whiteboard</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/">Home</Nav.Link>
+            <div>
+              <Button variant="success" onClick={() => { kc.logout({
+                redirectUri: 'http://localhost:3000/'
+              }) }}> Logout </Button>
+            </div>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+
+    <div className="container">
+      <Form/>
+    </div>
+
     </>
   );
 };
