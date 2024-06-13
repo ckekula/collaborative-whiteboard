@@ -1,7 +1,9 @@
-function whiteboard() {
+const Whiteboard = () => {
   return (
-    <div>whiteboard</div>
+    <canvas className="border border-dark border-2 h-100 w-100">
+      
+    </canvas>
   )
 }
 
-export default whiteboard
+export default Whiteboard

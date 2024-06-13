@@ -4,6 +4,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Form from './components/form/Form';
+import { Route, Routes } from 'react-router-dom';
+import RoomPage from './pages/roomPage/RoomPage';
 
 const initOptions = {
   url: process.env.REACT_APP_KEYCLOAK_URL as string,
@@ -55,7 +57,10 @@ const App = () => {
     </Navbar>
 
     <div className="container">
-      <Form/>
+      <Routes>
+        <Route path="/" element={<Form/>} />
+        <Route path="/:roomId" element={<RoomPage/>} />
+      </Routes>
     </div>
 
     </>
