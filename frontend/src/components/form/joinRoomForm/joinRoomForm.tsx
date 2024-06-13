@@ -1,4 +1,4 @@
-const JoinRoomForm = () => {
+const JoinRoomForm: React.FC = () => {
   return (
     <form className="form-w-100 mt-5">
       <div className="form-group">

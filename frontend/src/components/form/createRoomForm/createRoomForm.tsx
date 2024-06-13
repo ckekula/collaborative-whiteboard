@@ -1,4 +1,6 @@
-const CreateRoomForm = () => {
+import React from "react"
+
+const CreateRoomForm: React.FC = () => {
   return (
     <form className="form-w-100 mt-5">
       <div className="form-group">

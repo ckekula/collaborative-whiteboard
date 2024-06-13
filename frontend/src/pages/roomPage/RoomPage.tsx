@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./RoomPage.css";
 import Whiteboard from "../../components/whiteboard/Whiteboard";
+import { Element } from '../../types/WhiteboardTypes';
 
-const RoomPage = () => {
+const RoomPage: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [tool, setTool] = useState("pencil");
-  const [color, setColor] = useState("black");
+  const [tool, setTool] = useState<string>("pencil");
+  const [color, setColor] = useState<string>("black");
+  const [elements, setElements] = useState<Element[]>([]);
 
   return (
     <div className="row">
@@ -66,11 +70,15 @@ const RoomPage = () => {
         </div>
       </div>
       <div className="col-md-10 border mx-auto mt-2 mb-4 canvas-box">
-        <Whiteboard/>
+        <Whiteboard 
+          canvasRef={canvasRef} 
+          ctxRef={ctxRef}
+          elements={elements}
+          setElements={setElements}
+        />
       </div>
     </div>
-
   )
 }
 
-export default RoomPage
+export default RoomPage;
