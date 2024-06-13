@@ -1,13 +1,11 @@
-import { useState } from 'react';
 import Keycloak from 'keycloak-js';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 
-let initOptions = {
-  url: 'http://localhost:8080/',
-  realm: 'myrealm',
-  clientId: 'react-client',
-}
+const initOptions = {
+  url: process.env.REACT_APP_KEYCLOAK_URL as string,
+  realm: process.env.REACT_APP_KEYCLOAK_REALM as string,
+  clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID as string,
+};
 
 let kc = new Keycloak(initOptions);
 
@@ -19,7 +17,6 @@ kc.init({
   if (!auth) {
     window.location.reload();
   } else {
-    /* Remove below logs if you are using this on production */
     console.info("Authenticated");
     console.log('auth', auth)
     console.log('Keycloak', kc)
@@ -30,13 +27,10 @@ kc.init({
     }
   }
 }, () => {
-  /* Notify the user if necessary */
   console.error("Authentication Failed");
 });
 
-function App() {
-
-  const [infoMessage, setInfoMessage] = useState('');
+const App = () => {
 
   return (
     <>
@@ -45,21 +39,9 @@ function App() {
       </div>
       
       <div>
-        <Button onClick={() => {setInfoMessage(
-          kc.authenticated ? 'Authenticated: TRUE' : 'Authenticated: FALSE'
-        ); }}/>
-        <Button onClick={() => { kc.login() }}/>
-        <Button onClick={() => { kc.logout({
+        <Button variant="success" onClick={() => { kc.logout({
           redirectUri: 'http://localhost:3000/'
-        }) }}/>
-      </div>
-
-      <div>
-        <Card>
-          <p style={{ wordBreak: 'break-all' }} id='infoPanel'>
-            {infoMessage}
-          </p>
-        </Card>
+        }) }}> Logout </Button>
       </div>
     </>
   );
