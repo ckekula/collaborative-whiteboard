@@ -9,7 +9,8 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
   ctxRef,
   elements,
   setElements,
-  tool
+  tool,
+  color
 }) => {
 
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -20,9 +21,21 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
       canvas.height = window.innerHeight * 2;
       canvas.width = window.innerWidth * 2;
       const ctx = canvas.getContext("2d");
+
+      if (ctx) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+      }
       ctxRef.current = ctx;
     }
-  }, [canvasRef, ctxRef]);
+  }, []);
+
+  useEffect(() => {
+    if (ctxRef.current) {
+      ctxRef.current.strokeStyle = color;
+    }
+  }, [color]);
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -31,7 +44,11 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
       ctxRef.current.clearRect(0, 0, canvas.width, canvas.height);
       elements.forEach((element) => {
         if (element.type === "pencil") {
-          roughCanvas.linearPath(element.path, { stroke: element.stroke });
+          roughCanvas.linearPath(element.path, {
+              stroke: element.stroke,
+              strokeWidth: 5,
+              roughness: 0
+          });
         } else if (element.type === "line") {
           roughCanvas.draw(
             roughGenerator.line(
@@ -39,7 +56,11 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
               element.offsetY, 
               element.offsetX + element.width, 
               element.offsetY + element.height,
-              { stroke: element.stroke }
+              { 
+                stroke: element.stroke,
+                strokeWidth: 5,
+                roughness: 0
+              }
             )
           );
         } else if (element.type === "rect" ) {
@@ -49,7 +70,11 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
               element.offsetY, 
               element.width, 
               element.height,
-              { stroke: element.stroke }
+              { 
+                stroke: element.stroke,
+                strokeWidth: 5,
+                roughness: 0
+              }
             )
           );
         }
@@ -68,7 +93,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
           offsetX,
           offsetY,
           path: [[offsetX, offsetY]],
-          stroke: "black",
+          stroke: color,
         } as Element,
       ]);
     } else if (tool === "line") {
@@ -80,7 +105,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
           offsetY,
           height: 0,
           width: 0,
-          stroke: "black",
+          stroke: color,
         } as Element,
       ]);
     } else if (tool === "rect") {
@@ -92,7 +117,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
           offsetY,
           height: 0,
           width: 0,
-          stroke: "black",
+          stroke: color,
         } as Element,
       ]);
     }

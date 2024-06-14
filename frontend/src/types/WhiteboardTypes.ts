@@ -35,4 +35,5 @@ export interface WhiteboardProps {
     elements: Element[];
     setElements: React.Dispatch<React.SetStateAction<Element[]>>;
     tool: string;
+    color: string;
 }
