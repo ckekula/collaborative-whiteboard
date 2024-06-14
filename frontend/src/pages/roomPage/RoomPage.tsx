@@ -75,6 +75,7 @@ const RoomPage: React.FC = () => {
           ctxRef={ctxRef}
           elements={elements}
           setElements={setElements}
+          tool={tool}
         />
       </div>
     </div>
