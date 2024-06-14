@@ -1,21 +1,17 @@
 {
-  "name": "collborative-whiteboard-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "This is the backend for the collaborative whiteboard app",
-  "main": "server.ts",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.ts",
-    "dev": "nodemon --exec 'ts-node' server.ts"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "author": "chamuditha kekulawala",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.21",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
   }
 }

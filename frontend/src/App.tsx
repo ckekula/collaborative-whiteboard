@@ -6,6 +6,19 @@ import Button from 'react-bootstrap/Button';
 import Form from './components/form/Form';
 import { Route, Routes } from 'react-router-dom';
 import RoomPage from './pages/roomPage/RoomPage';
+import { v4 as uuidv4 } from 'uuid';
+import io from'socket.io-client';
+import { useEffect, useState } from 'react';
+
+const server = "http://localhost:5000";
+const connectionOptions = {
+  "force new connection": true,
+  reconnectionAttempts: Infinity,
+  timeout: 10000,
+  transports: ["websocket"],
+}
+
+const socket = io(server, connectionOptions);
 
 const initOptions = {
   url: process.env.REACT_APP_KEYCLOAK_URL as string,
@@ -37,6 +50,19 @@ kc.init({
 });
 
 const App = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    socket.on("userIsJoined", (data) => {
+      if(data.success){
+        setUser(data);
+        console.log("user is joined");
+      } else {
+        console.log("user is not joined");
+      }
+    })
+  }, []);
+
   return (
     <>
     <Navbar bg="primary" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
@@ -58,7 +84,9 @@ const App = () => {
 
     <div className="container">
       <Routes>
-        <Route path="/" element={<Form/>} />
+        <Route path="/" element={
+          <Form uuid={uuidv4} socket={socket} setUser={setUser}/>
+        } />
         <Route path="/:roomId" element={<RoomPage/>} />
       </Routes>
     </div>
