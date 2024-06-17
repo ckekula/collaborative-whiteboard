@@ -1,59 +1,136 @@
 import React, { useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { toast } from "react-toastify";
+import { JoinCreateRoomProps } from "./types/RoomTypes";
 
-interface JoinCreateRoomProps {
-  uuid: () => string;
-  setRoomJoined: React.Dispatch<React.SetStateAction<boolean>>;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
-}
+const JoinCreateRoom: React.FC<JoinCreateRoomProps> = ({ uuid, setUser, setRoomJoined }) => {
+  const [roomId, setRoomId] = useState(uuid());
+  const [name, setName] = useState("");
+  const [joinName, setJoinName] = useState("");
+  const [joinRoomId, setJoinRoomId] = useState("");
 
-const JoinCreateRoom: React.FC<JoinCreateRoomProps> = ({ uuid, setRoomJoined, setUser }) => {
-  const [userName, setUserName] = useState<string>("");
-  const [roomName, setRoomName] = useState<string>("");
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const userId = uuid();
-    const roomId = roomName ? roomName : uuid();
-    const newUser = {
-      userId,
-      userName,
+    if (!name) return toast.dark("Please enter your name!");
+
+    setUser({
       roomId,
-      host: roomName ? false : true,
-      presenter: roomName ? false : true,
-    };
-    setUser(newUser);
+      userId: uuid(),
+      userName: name,
+      host: true,
+      presenter: true,
+    });
+    setRoomJoined(true);
+  };
+  const handleJoinSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!joinName) return toast.dark("Please enter your name!");
+
+    setUser({
+      roomId: joinRoomId,
+      userId: uuid(),
+      userName: joinName,
+      host: false,
+      presenter: false,
+    });
     setRoomJoined(true);
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="display-5 text-center mb-4">React Drawing App</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="userName">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="userName"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            required
-          />
+    <div className="container">
+      <div className="row">
+        <div className="col-md-12">
+          <h1 className="text-center my-5">
+            Welcome To Realtime Whiteboard Sharing App
+          </h1>
         </div>
-        <div className="form-group">
-          <label htmlFor="roomName">Room</label>
-          <input
-            type="text"
-            className="form-control"
-            id="roomName"
-            value={roomName}
-            onChange={(e) => setRoomName(e.target.value)}
-          />
+      </div>
+      <div className="row mx-5 mt-5">
+        <div className="col-md-5 p-5 border mx-auto">
+          <h1 className="text-center text-primary mb-5">Create Room</h1>
+          <form onSubmit={handleCreateSubmit}>
+            <div className="form-group my-2">
+              <input
+                type="text"
+                placeholder="Name"
+                className="form-control"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="input-group my-2 border align-items-center">
+              <input
+                type="text"
+                className="form-control border-0 outline-0"
+                value={roomId}
+                readOnly={true}
+                style={{
+                  boxShadow: "none",
+                  zIndex: "0 !important",
+                  fontSize: "0.89rem !important",
+                }}
+              />
+              <div className="input-group-append">
+                <button
+                  className="btn btn-outline-primary  border-0 btn-sm"
+                  type="button"
+                  onClick={() => setRoomId(uuid())}
+                >
+                  Generate
+                </button>
+                &nbsp;&nbsp;
+                <CopyToClipboard
+                  text={roomId}
+                  onCopy={() => toast.success("Room Id Copied To Clipboard!")}
+                >
+                  <button
+                    className="btn btn-outline-dark border-0 btn-sm"
+                    type="button"
+                  >
+                    Copy
+                  </button>
+                </CopyToClipboard>
+              </div>
+            </div>
+            <div className="form-group mt-5">
+              <button type="submit" className="form-control btn btn-dark">
+                Create Room
+              </button>
+            </div>
+          </form>
         </div>
-        <button type="submit" className="btn btn-primary">
-          {roomName ? "Join Room" : "Create Room"}
-        </button>
-      </form>
+        <div className="col-md-5 p-5 border mx-auto">
+          <h1 className="text-center text-primary mb-5">Join Room</h1>
+          <form onSubmit={handleJoinSubmit}>
+            <div className="form-group my-2">
+              <input
+                type="text"
+                placeholder="Name"
+                className="form-control"
+                value={joinName}
+                onChange={(e) => setJoinName(e.target.value)}
+              />
+            </div>
+            <div className="form-group my-2">
+              <input
+                type="text"
+                className="form-control outline-0"
+                value={joinRoomId}
+                onChange={(e) => setJoinRoomId(e.target.value)}
+                placeholder="Room Id"
+                style={{
+                  boxShadow: "none",
+                }}
+              />
+            </div>
+            <div className="form-group mt-5">
+              <button type="submit" className="form-control btn btn-dark">
+                Join Room
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,19 +1,6 @@
 import React from "react";
-import { Socket } from "socket.io-client";
+import { SidebarProps } from "./types/SidebarTypes";
 
-interface User {
-  userId: string;
-  userName: string;
-  roomId: string;
-  host: boolean;
-  presenter: boolean;
-}
-
-interface SidebarProps {
-  users: User[];
-  user: User;
-  socket: Socket;
-}
 
 const Sidebar: React.FC<SidebarProps> = ({ users, user, socket }) => {
   const handlePresenterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

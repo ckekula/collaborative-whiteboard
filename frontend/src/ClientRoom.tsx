@@ -1,13 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import { Socket } from "socket.io-client";
-
-interface ClientRoomProps {
-  userNo: number;
-  socket: Socket;
-  setUsers: React.Dispatch<React.SetStateAction<any[]>>;
-  setUserNo: React.Dispatch<React.SetStateAction<number>>;
-}
+import { ClientRoomProps } from "./types/RoomTypes";
 
 const ClientRoom: React.FC<ClientRoomProps> = ({ userNo, socket, setUsers, setUserNo }) => {
   const imgRef = useRef<HTMLImageElement>(null);

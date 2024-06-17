@@ -8,6 +8,8 @@ import Sidebar from "./Sidebar";
 import "./style.css";
 import { v4 as uuidv4 } from 'uuid';
 
+import { User } from "./types/User";
+
 const server = "http://localhost:5000";
 const connectionOptions = {
   "force new connection": true,
@@ -17,14 +19,6 @@ const connectionOptions = {
 };
 
 const socket: Socket = io(server, connectionOptions);
-
-interface User {
-  userId: string;
-  userName: string;
-  roomId: string;
-  host: boolean;
-  presenter: boolean;
-}
 
 const App: React.FC = () => {
   const [userNo, setUserNo] = useState<number>(0);

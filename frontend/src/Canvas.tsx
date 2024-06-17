@@ -1,18 +1,8 @@
-import React, { useEffect, useLayoutEffect, useState, RefObject } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import rough from "roughjs";
-import { Socket } from "socket.io-client";
+import { CanvasProps } from "./types/WhiteboardTypes";
 
 const generator = rough.generator();
-
-interface CanvasProps {
-  canvasRef: RefObject<HTMLCanvasElement>;
-  ctx: React.MutableRefObject<CanvasRenderingContext2D | null>;
-  color: string;
-  setElements: React.Dispatch<React.SetStateAction<any[]>>;
-  elements: any[];
-  tool: string;
-  socket: Socket;
-}
 
 const Canvas: React.FC<CanvasProps> = ({
   canvasRef,
@@ -34,6 +24,7 @@ const Canvas: React.FC<CanvasProps> = ({
       canvas.style.height = `${window.innerHeight}px`;
       const context = canvas.getContext("2d");
       if (context) {
+        context.lineWidth = 5;  // Corrected property name
         context.scale(2, 2);
         context.lineCap = "round";
         context.strokeStyle = color;
