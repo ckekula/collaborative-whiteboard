@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react';
-
+import { User } from './FormTypes';
 export interface BaseElement {
   type: string;
   path?: [number, number][];
@@ -35,5 +35,6 @@ export interface WhiteboardProps {
     elements: Element[];
     setElements: React.Dispatch<React.SetStateAction<Element[]>>;
     tool: string;
-    color: string;
+    color: any;
+    user: User | null;
 }
