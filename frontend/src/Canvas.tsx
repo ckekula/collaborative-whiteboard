@@ -24,7 +24,6 @@ const Canvas: React.FC<CanvasProps> = ({
       canvas.style.height = `${window.innerHeight}px`;
       const context = canvas.getContext("2d");
       if (context) {
-        context.lineWidth = 5;  // Corrected property name
         context.scale(2, 2);
         context.lineCap = "round";
         context.strokeStyle = color;

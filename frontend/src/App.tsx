@@ -5,7 +5,7 @@ import ClientRoom from "./ClientRoom";
 import JoinCreateRoom from "./JoinCreateRoom";
 import Room from "./Room";
 import Sidebar from "./Sidebar";
-import "./style.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
 
 import { User } from "./types/User";
@@ -37,7 +37,7 @@ const App: React.FC = () => {
       <ToastContainer />
       {roomJoined ? (
         <>
-          <Sidebar users={users} user={user} socket={socket} />
+          <Sidebar users={users} socket={socket} />
           {user.presenter ? (
             <Room
               userNo={userNo}

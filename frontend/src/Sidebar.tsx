@@ -1,35 +1,57 @@
-import React from "react";
+import React, { useRef } from "react";
 import { SidebarProps } from "./types/SidebarTypes";
 
+const Sidebar: React.FC<SidebarProps> = ({ users, socket }) => {
+  const sideBarRef = useRef<HTMLDivElement>(null);
 
-const Sidebar: React.FC<SidebarProps> = ({ users, user, socket }) => {
-  const handlePresenterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedUser = users.find((u) => u.userId === e.target.value);
-    if (selectedUser) {
-      socket.emit("presenter-change", selectedUser);
-    }
-  };
+  const element = sideBarRef.current;
+  const openSideBar = () => {
+    if (element) {
+      element.style.left = "0px";
+    };
+  }
+
+  const closeSideBar = () => {
+    if (element) {
+      element.style.left = -100 + "%";
+    };
+  }
 
   return (
-    <div className="bg-light border-right col-md-2" id="sidebar-wrapper">
-      <div className="sidebar-heading text-center">Settings</div>
-      <div className="list-group list-group-flush">
-        <div className="list-group-item">
-          <p className="text-secondary">Presenter</p>
-          <select
-            className="form-control"
-            value={users.find((u) => u.presenter)?.userId || ""}
-            onChange={handlePresenterChange}
-          >
-            {users.map((u) => (
-              <option key={u.userId} value={u.userId}>
-                {u.userName}
-              </option>
-            ))}
-          </select>
+    <>
+      <button
+        className="btn btn-dark btn-sm"
+        onClick={openSideBar}
+        style={{ position: "absolute", top: "5%", left: "5%" }}
+      >
+        Users
+      </button>
+      <div
+        className="position-fixed pt-2 h-100 bg-dark"
+        ref={sideBarRef}
+        style={{
+          width: "150px",
+          left: "-100%",
+          transition: "0.3s linear",
+          zIndex: "9999",
+        }}
+      >
+        <button
+          className="btn btn-block border-0 form-control rounded-0 btn-light"
+          onClick={closeSideBar}
+        >
+          Close
+        </button>
+        <div className="w-100 mt-5">
+          {users.map((user, index) => (
+            <p key={index} className="text-white text-center py-2">
+              {user.userName}
+              {user.userId === socket.id && " - (You)"}
+            </p>
+          ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
